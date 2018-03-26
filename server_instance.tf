@@ -50,11 +50,11 @@ for count in $(seq 1 65000); do
     sleep 5
 fi
 done
-apt-get update
-apt-get -y install python-pip awscli
-pip install --upgrade pip
-pip install boto3
-git clone https://gist.github.com/78d9c2c34c9cff5256056b23cda9222c.git /opt/server/
+time apt-get update
+time apt-get -y install python-pip awscli
+time pip install --upgrade pip
+time pip install boto3
+time git clone https://gist.github.com/78d9c2c34c9cff5256056b23cda9222c.git /opt/server/
 python /opt/server/server.py &
 date
 EOF
