@@ -1,6 +1,6 @@
-resource "aws_security_group" "us-east-1_client_sg" {
-        name = "us-east-1_client_sg"
-        vpc_id="${aws_vpc.us-east-1_client_vpc.id}"
+resource "aws_security_group" "us-west-2_client_sg" {
+        name = "us-west-2_client_sg"
+        vpc_id="${aws_vpc.us-west-2_client_vpc.id}"
         
         egress {
         from_port=0
@@ -8,13 +8,18 @@ resource "aws_security_group" "us-east-1_client_sg" {
         protocol="-1"
         cidr_blocks=["0.0.0.0/0"]
         }
+
+	tags {
+		Name="us-west-2_client_sg"
+		Environment="client"
+	}
 }
 
 resource "aws_instance" "client" {
         ami = "ami-79873901"
         instance_type="t2.micro"
-	subnet_id="${aws_subnet.us-east-1a_client_subnet.id}"
-	vpc_security_group_ids = ["${aws_security_group.us-east-1_client_sg.id}"]
+	subnet_id="${aws_subnet.us-west-2a_client_subnet.id}"
+	vpc_security_group_ids = ["${aws_security_group.us-west-2_client_sg.id}"]
         user_data = <<EOF
 #!/bin/bash
 date
@@ -40,7 +45,8 @@ date
 EOF
   key_name = "us-west-2-Desktop"
   tags {
-        Name="client"
+        Name="us-west-2_client_instance"
+	Environment="client"
   }
   iam_instance_profile="${aws_iam_instance_profile.ec2-cw-sg_profile.id}"
 }
