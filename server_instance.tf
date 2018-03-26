@@ -27,7 +27,7 @@ resource "aws_security_group_rule" "us-east-1_server_sg"{
   }
 
 resource "aws_instance" "server" {
-  ami = "ami-66506c1c"
+  ami = "ami-79873901"
   instance_type="t2.micro"
   subnet_id="${aws_subnet.us-east-1a_server_subnet.id}"
   vpc_security_group_ids = ["${aws_security_group.us-east-1_server_sg.id}"]
@@ -52,7 +52,7 @@ git clone https://gist.github.com/78d9c2c34c9cff5256056b23cda9222c.git /opt/serv
 python /opt/server/server.py &
 date
 EOF
-  key_name = "us-east-1-Desktop"
+  key_name = "us-west-2-Desktop"
   tags {
         Name = "server"
   }

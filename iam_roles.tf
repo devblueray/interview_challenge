@@ -33,16 +33,16 @@ resource "aws_iam_policy" "ec2-cw-sg_policy" {
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:us-east-1:*:log-group:pinger",
-                "arn:aws:logs:us-east-1:*:log-group:pinger:*:pinger",
-                "arn:aws:ec2:us-east-1:*:security-group/sg-8fd7f7f9"
+                "arn:aws:logs:us-west-2:*:log-group:pinger",
+                "arn:aws:logs:us-west-2:*:log-group:pinger:*:pinger",
+                "arn:aws:ec2:us-west-2:*:security-group/sg-8fd7f7f9"
             ]
         },
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "ec2:RevokeSecurityGroupIngress",
-            "Resource": "arn:aws:ec2:us-east-1:*:security-group/sg-dcd0f0aa"
+            "Resource": "arn:aws:ec2:us-west-2:*:security-group/sg-dcd0f0aa"
         },
         {
             "Sid": "VisualEditor2",

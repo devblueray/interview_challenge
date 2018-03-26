@@ -11,7 +11,7 @@ resource "aws_security_group" "us-east-1_client_sg" {
 }
 
 resource "aws_instance" "client" {
-        ami = "ami-66506c1c"
+        ami = "ami-79873901"
         instance_type="t2.micro"
 	subnet_id="${aws_subnet.us-east-1a_client_subnet.id}"
 	vpc_security_group_ids = ["${aws_security_group.us-east-1_client_sg.id}"]
@@ -35,10 +35,10 @@ echo "* * * * * echo ping | nc ${aws_instance.server.private_ip} 8023 >> /tmp/pi
 crontab -u ubuntu /tmp/cronnie
 git clone https://gist.github.com/e3c992ee3a6e0a90d23f5635de5a4b46.git /opt/aws-logs-config/
 wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -P /tmp/
-python /tmp/awslogs-agent-setup.py -n -r us-east-1 -c /opt/aws-logs-config/aws-log-config
+python /tmp/awslogs-agent-setup.py -n -r us-west-2 -c /opt/aws-logs-config/aws-log-config
 date
 EOF
-  key_name = "us-east-1-Desktop"
+  key_name = "us-west-2-Desktop"
   tags {
         Name="client"
   }
