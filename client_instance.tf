@@ -23,6 +23,7 @@ resource "aws_instance" "client" {
         user_data = <<EOF
 #!/bin/bash
 date
+ping -c4 www.google.com
 for count in $(seq 1 65000); do
   nc -z -v -w 5 gist.github.com 443 2>&1
   if [ "$?" == "0" ] ; then
@@ -43,11 +44,11 @@ time wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent
 time python /tmp/awslogs-agent-setup.py -n -r us-west-2 -c /opt/aws-logs-config/aws-log-config
 date
 EOF
-  key_name = "us-west-2-Desktop"
   tags {
         Name="us-west-2_client_instance"
 	Environment="client"
   }
+  key_name="us-west-2-Desktop"
   iam_instance_profile="${aws_iam_instance_profile.ec2-cw-sg_profile.id}"
 }
 

@@ -2,12 +2,6 @@ resource "aws_security_group" "us-west-2_server_sg" {
         name = "us-west-2_server_sg"
         vpc_id="${aws_vpc.us-west-2_server_vpc.id}"
         
-	ingress {
-	from_port=22
-	to_port=22
-	protocol="tcp"
-	cidr_blocks=["0.0.0.0/0"]
-	}
 	egress {
         from_port=0
         to_port=0
@@ -32,6 +26,7 @@ resource "aws_security_group_rule" "us-west-2_server_sg"{
         security_group_id="${aws_security_group.us-west-2_server_sg.id}"
   }
 
+
 resource "aws_instance" "server" {
   	ami = "ami-79873901"
   	instance_type="t2.micro"
@@ -41,6 +36,7 @@ resource "aws_instance" "server" {
   	user_data = <<EOF
 #!/bin/bash
 date
+ping -c4 www.google.com
 for count in $(seq 1 65000); do
   nc -z -v -w 5 gist.github.com 443 2>&1
   if [ "$?" == "0" ] ; then
@@ -51,11 +47,8 @@ for count in $(seq 1 65000); do
 fi
 done
 time apt-get update
-time apt-get -y install python-pip awscli
-time pip install --upgrade pip
-time pip install boto3
-time git clone https://gist.github.com/78d9c2c34c9cff5256056b23cda9222c.git /opt/server/
-python /opt/server/server.py &
+time apt-get -y install docker.io
+time docker run -d -p 8023:8023 devblueray/interview:latest
 date
 EOF
   	key_name = "us-west-2-Desktop"
@@ -63,7 +56,7 @@ EOF
         	Name="us-west-2_server_instance"
         	Environment="server"
   	}
-
+        key_name="us-west-2-Desktop"
   	iam_instance_profile="${aws_iam_instance_profile.ec2-cw-sg_profile.id}"
 }
 
