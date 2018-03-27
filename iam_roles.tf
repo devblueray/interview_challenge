@@ -33,8 +33,8 @@ resource "aws_iam_policy" "ec2-cw-sg_policy" {
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:us-west-2:*:log-group:pinger",
-                "arn:aws:logs:us-west-2:*:log-group:pinger:*:pinger"
+                "arn:aws:logs:us-east-1:*:log-group:pinger",
+                "arn:aws:logs:us-east-1:*:log-group:pinger:*:pinger"
             ]
         },
         {

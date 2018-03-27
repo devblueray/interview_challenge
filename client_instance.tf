@@ -1,6 +1,6 @@
-resource "aws_security_group" "us-west-2_client_sg" {
-        name = "us-west-2_client_sg"
-        vpc_id="${aws_vpc.us-west-2_client_vpc.id}"
+resource "aws_security_group" "us-east-1_client_sg" {
+        name = "us-east-1_client_sg"
+        vpc_id="${aws_vpc.us-east-1_client_vpc.id}"
         
         egress {
         from_port=0
@@ -10,16 +10,16 @@ resource "aws_security_group" "us-west-2_client_sg" {
         }
 
 	tags {
-		Name="us-west-2_client_sg"
+		Name="us-east-1_client_sg"
 		Environment="client"
 	}
 }
 
 resource "aws_instance" "client" {
-        ami = "ami-79873901"
+        ami = "ami-66506c1c"
         instance_type="t2.micro"
-	subnet_id="${aws_subnet.us-west-2a_client_subnet.id}"
-	vpc_security_group_ids = ["${aws_security_group.us-west-2_client_sg.id}"]
+	subnet_id="${aws_subnet.us-east-1a_client_subnet.id}"
+	vpc_security_group_ids = ["${aws_security_group.us-east-1_client_sg.id}"]
         user_data = <<EOF
 #!/bin/bash
 date
@@ -41,14 +41,14 @@ time echo "* * * * * echo ping | nc ${aws_instance.server.private_ip} 8023 >> /t
 time crontab -u ubuntu /tmp/cronnie
 time git clone https://gist.github.com/e3c992ee3a6e0a90d23f5635de5a4b46.git /opt/aws-logs-config/
 time wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -P /tmp/
-time python /tmp/awslogs-agent-setup.py -n -r us-west-2 -c /opt/aws-logs-config/aws-log-config
+time python /tmp/awslogs-agent-setup.py -n -r us-east-1 -c /opt/aws-logs-config/aws-log-config
 date
 EOF
   tags {
-        Name="us-west-2_client_instance"
+        Name="us-east-1_client_instance"
 	Environment="client"
   }
-  key_name="us-west-2-Desktop"
+  key_name="us-east-1-Desktop"
   iam_instance_profile="${aws_iam_instance_profile.ec2-cw-sg_profile.id}"
 }
 
